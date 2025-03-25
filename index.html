@@ -3,21 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J9V1XR626F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J9V1XR626F');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J9V1XR626F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J9V1XR626F');
+  </script>
   <meta name="google-adsense-account" content="ca-pub-9880204299534500">
-  <title>분수 비교 연습</title>
+  <title>수학 계산 연습</title>
   <style>
+    /* 기본 스타일 */
     body {
       font-family: Arial, sans-serif;
-      margin: 20px auto; /* 좌우 중앙 정렬 */
+      margin: 20px auto;
       max-width: 800px;
+      padding: 0 10px;
+    }
+    h1 {
+      margin: 0;
+    }
+    /* 네비게이션 바 */
+    .nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .nav button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .nav .active {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    /* 분수 비교 연습 페이지 */
+    #fraction-page {
+      display: none;
     }
     .header {
       text-align: center;
@@ -57,104 +81,181 @@
       text-align: center;
       margin-top: 20px;
     }
+    .controls button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
     .result {
       margin-top: 10px;
       font-weight: bold;
     }
+    /* 곱셈 연습 페이지 */
+    #multiplication-page {
+      display: none;
+      margin-top: 40px;
+    }
+    .mul-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .numbers-container {
+      text-align: center;
+    }
+    .numbers {
+      display: inline-block;
+      text-align: right;  /* 내부의 숫자와 입력란을 오른쪽 정렬 */
+      font-family: "Courier New", Courier, monospace; /* 모노스페이스 폰트로 자릿수 일치 */
+    }
+    .number {
+      display: block;
+      font-size: 2em;
+      line-height: 1.2;
+    }
+    .input-feedback-container {
+      display: inline-block;
+      text-align: right;
+      margin-top: 10px;
+    }
+    /* 입력란은 고정 폭(5ch)으로 설정하여 문제마다 폭이 변하지 않음 */
+    .answer-input {
+      font-size: 2em;
+      text-align: right;
+      width: 5ch;
+      position: relative;
+      left: 42px;  
+      font-family: "Courier New", Courier, monospace;
+
+    }
+    /* 피드백 아이콘 영역에 고정 폭(24px)을 부여 */
+    .feedback {
+      display: inline-block;
+      width: 24px;
+      text-align: center;
+      margin-left: 5px;
+      position: relative;
+      left: 30px;  
+    }
+    /* 스피너 제거 (Chrome, Safari, Edge, Opera) */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* 스피너 제거 (Firefox) */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>분수 비교 연습</h1>
-    <p>난이도를 선택하면 바로 문제가 새로 생성됩니다.<br>
-       아래 15문제에서 두 분수 중 더 큰 분수를 클릭하세요.</p>
-    <label><input type="radio" name="difficulty" value="hard"> 상</label>
-    <label><input type="radio" name="difficulty" value="medium" checked> 중</label>
-    <label><input type="radio" name="difficulty" value="easy"> 하</label>
+  <!-- 네비게이션 바 -->
+  <div class="nav">
+    <button id="btn-fraction" class="active">분수 비교 연습</button>
+    <button id="btn-multiplication">곱셈 연습</button>
   </div>
 
-  <div id="problems"></div>
+  <!-- 분수 비교 연습 페이지 -->
+  <div id="fraction-page">
+    <div class="header">
+      <h1>분수 비교 연습</h1>
+      <p>난이도를 선택하면 바로 문제가 새로 생성됩니다.<br>
+         아래 15문제에서 두 분수 중 더 큰 분수를 클릭하세요.</p>
+      <label><input type="radio" name="difficulty" value="hard"> 상</label>
+      <label><input type="radio" name="difficulty" value="medium" checked> 중</label>
+      <label><input type="radio" name="difficulty" value="easy"> 하</label>
+    </div>
+    <div id="problems"></div>
+    <div class="controls">
+      <button id="refresh">문제 새로고침</button>
+      <button id="grade">채점</button>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
 
-  <div class="controls">
-    <button id="refresh">문제 새로고침</button>
-    <button id="grade">채점</button>
-    <div class="result" id="result"></div>
+  <!-- 곱셈 연습 페이지 -->
+  <div id="multiplication-page">
+    <div class="mul-header">
+      <h1>곱셈 연습</h1>
+      <p>아래의 곱셈 문제를 풀고 엔터키로 정답을 제출하세요.</p>
+    </div>
+    <div class="numbers-container">
+      <div class="numbers">
+        <div id="lineA" class="number"></div>
+        <div id="lineB" class="number"></div>
+        <div class="input-feedback-container">
+          <input type="number" id="answer-input" class="answer-input" placeholder="">
+          <span id="feedback" class="feedback"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // 최소 1.5% 이상 차이가 나야 함
-    const MIN_DIFF_RATIO = 0.015; // 1.5%
+    /* ---------- 페이지 전환 기능 ---------- */
+    function showFractionPage() {
+      document.getElementById('fraction-page').style.display = 'block';
+      document.getElementById('multiplication-page').style.display = 'none';
+      document.getElementById('btn-fraction').classList.add('active');
+      document.getElementById('btn-multiplication').classList.remove('active');
+      generateProblems();
+    }
+    function showMultiplicationPage() {
+      document.getElementById('fraction-page').style.display = 'none';
+      document.getElementById('multiplication-page').style.display = 'block';
+      document.getElementById('btn-multiplication').classList.add('active');
+      document.getElementById('btn-fraction').classList.remove('active');
+      generateMulProblem();
+    }
+    document.getElementById('btn-fraction').addEventListener('click', showFractionPage);
+    document.getElementById('btn-multiplication').addEventListener('click', showMultiplicationPage);
 
-    // 3자리 또는 4자리 수를 랜덤 생성 (50:50 확률)
+    /* ---------- 분수 비교 연습 페이지 스크립트 ---------- */
+    const MIN_DIFF_RATIO = 0.015; // 1.5%
     function randomNumber(isThreeDigit) {
       if (isThreeDigit) {
-        return Math.floor(Math.random() * 900) + 100; // 100~999
+        return Math.floor(Math.random() * 900) + 100; // 100 ~ 999
       } else {
-        return Math.floor(Math.random() * 9000) + 1000; // 1000~9999
+        return Math.floor(Math.random() * 9000) + 1000; // 1000 ~ 9999
       }
     }
-
-    // Easy 난이도용 백분율 목록
     const presetPercentages = [5,15,20,25,50,75,80,85,110,115,120,125,150];
-
-    // ----------------------------------------------------------------
-    // Easy 난이도
-    // ----------------------------------------------------------------
-
-    // Easy 난이도 분수1: 미리 정해진 백분율로 생성
     function generateEasyFraction1() {
       const p = presetPercentages[Math.floor(Math.random() * presetPercentages.length)];
-      const value1 = p / 100;  // 예: 80% → 0.8
-
-      // 분자 = round(value1 * denominator)가 최소 100
-      // denominator는 3자리/4자리 중 선택
+      const value1 = p / 100;
       const minDenom = Math.ceil(100 / value1);
       let denominator;
-      // digitType = 3자리 or 4자리
       const digitType = (Math.random() < 0.5 && minDenom <= 999) ? "3" : "4";
       if (digitType === "3") {
         do {
-          denominator = randomNumber(true); // 3자리
+          denominator = randomNumber(true);
         } while (denominator < minDenom);
       } else {
         do {
-          denominator = randomNumber(false); // 4자리
+          denominator = randomNumber(false);
         } while (denominator < minDenom);
       }
       let numerator = Math.round(value1 * denominator);
       if (numerator < 100) numerator = 100;
-      return {
-        frac: { numerator, denominator },
-        value: value1,
-        preset: p
-      };
+      return { frac: { numerator, denominator }, value: value1, preset: p };
     }
-
-    // Easy 난이도 분수2: 분수1 값(value1)에서 ±10% 범위
-    // + 최소 1.5% 차이 조건
     function generateEasyFraction2(value1) {
       let attempts = 0;
       while (true) {
         attempts++;
         if (attempts > 1000) {
-          // 실패 시 fallback
-          // value1에 +10% 고정값 정도로 생성
           let fallbackValue = value1 * 1.10;
           return generateEasyFraction2Core(fallbackValue);
         }
-        // 실제 생성 시도
-        const delta = (Math.random() * 2 - 1) * 0.10; // ±10%
+        const delta = (Math.random() * 2 - 1) * 0.10;
         const targetValue2 = value1 * (1 + delta);
         if (Math.abs(targetValue2 - value1) / value1 < MIN_DIFF_RATIO) {
-          // 1.5% 미만이면 재시도
           continue;
         }
-        // 1.5% 이상 차이가 나면 분수2 생성
         return generateEasyFraction2Core(targetValue2);
       }
     }
-
-    // 분수2의 분모/분자를 계산하는 코어 로직
     function generateEasyFraction2Core(targetValue2) {
       const minDenom = Math.ceil(100 / targetValue2);
       const digitType = (Math.random() < 0.5 && minDenom <= 999) ? "3" : "4";
@@ -170,152 +271,81 @@
       }
       let numerator = Math.round(targetValue2 * denominator);
       if (numerator < 100) numerator = 100;
-      return {
-        numerator,
-        denominator,
-        value: targetValue2
-      };
+      return { numerator, denominator, value: targetValue2 };
     }
-
-    // ----------------------------------------------------------------
-    // Medium/Hard 난이도
-    // ----------------------------------------------------------------
-
-    // 완전 무작위 분수 생성
     function generateFraction() {
       return {
         numerator: (Math.random() < 0.5 ? randomNumber(true) : randomNumber(false)),
         denominator: (Math.random() < 0.5 ? randomNumber(true) : randomNumber(false))
       };
     }
-
-    // Medium/Hard: 분수2 생성 (±15%/±5% 오차) + 최소 1.5% 차이 조건
     function generateCloseFractionValue(baseFraction, difficulty) {
       const baseValue = baseFraction.numerator / baseFraction.denominator;
       const errorRange = (difficulty === 'hard') ? 0.05 : 0.15;
       let attempts = 0;
-
       while (true) {
         attempts++;
         if (attempts > 1000) {
-          // fallback
           return { numerator: baseFraction.numerator, denominator: baseFraction.denominator };
         }
-
-        // 무작위 오차
         const error = (Math.random() * 2 - 1) * errorRange;
         const targetValue = baseValue * (1 + error);
-
-        // 최소 1.5% 차이 확인
         if (Math.abs(targetValue - baseValue) / baseValue < MIN_DIFF_RATIO) {
-          // 1.5% 미만이면 재시도
           continue;
         }
-
-        // 이제 cross-digit 로직으로 fraction2 생성
         const fraction2 = tryBuildFraction2(targetValue, baseFraction);
-        if (fraction2) return fraction2; // 유효하면 반환
+        if (fraction2) return fraction2;
       }
     }
-
-    // cross-digit 생성 로직
     function tryBuildFraction2(targetValue, baseFraction) {
       let attempts2 = 0;
       while (attempts2 < 1000) {
         attempts2++;
-        const forceCross = Math.random() < 0.8; // 80% 확률 cross-digit
+        const forceCross = Math.random() < 0.8;
         if (forceCross) {
           if (Math.random() < 0.5) {
-            // 옵션 A: 분자가 3자리, 분모가 4자리
             const denominator = randomNumber(false);
             const numerator = Math.round(targetValue * denominator);
-            if (numerator >= 100 && numerator <= 999) {
-              return { numerator, denominator };
-            }
+            if (numerator >= 100 && numerator <= 999) return { numerator, denominator };
           } else {
-            // 옵션 B: 분자가 4자리, 분모가 3자리
             const denominator = randomNumber(true);
             const numerator = Math.round(targetValue * denominator);
-            if (numerator >= 1000 && numerator <= 9999) {
-              return { numerator, denominator };
-            }
+            if (numerator >= 1000 && numerator <= 9999) return { numerator, denominator };
           }
         } else {
-          // 기존 방식
           const denomIsThree = Math.random() < 0.5;
           const denominator = denomIsThree ? randomNumber(true) : randomNumber(false);
           const numerator = Math.round(targetValue * denominator);
-          if (numerator >= 100 && numerator <= 9999) {
-            return { numerator, denominator };
-          }
+          if (numerator >= 100 && numerator <= 9999) return { numerator, denominator };
         }
       }
-      // 실패
       return null;
     }
-
-    // ----------------------------------------------------------------
-    // 난이도별 문제 생성
-    // ----------------------------------------------------------------
-
     function generateProblem(difficulty) {
       let frac1, frac2, answer;
       if (difficulty === 'easy') {
-        // Easy 난이도
         const result1 = generateEasyFraction1();
         frac1 = result1.frac;
-        const value1 = result1.value;  // 분수1의 실제 값
-        const preset = result1.preset; // UI 표시용 백분율
-
-        // 분수2 생성
+        const value1 = result1.value;
+        const preset = result1.preset;
         const result2 = generateEasyFraction2(value1);
         frac2 = { numerator: result2.numerator, denominator: result2.denominator };
-
-        // 정답 결정
         answer = (value1 > result2.value) ? "first" : "second";
-
-        return {
-          frac1, frac2, answer,
-          userAnswer: null,
-          difficulty,
-          preset
-        };
-
+        return { frac1, frac2, answer, userAnswer: null, difficulty, preset };
       } else {
-        // Medium/Hard 난이도
-        // 분수1: 0.5~2 범위 내에서 생성
-        do {
-          frac1 = generateFraction();
-        } while (frac1.numerator / frac1.denominator < 0.5 || frac1.numerator / frac1.denominator > 2);
-
-        // 분수2 생성
+        do { frac1 = generateFraction(); }
+        while (frac1.numerator / frac1.denominator < 0.5 || frac1.numerator / frac1.denominator > 2);
         const fraction2 = generateCloseFractionValue(frac1, difficulty);
         frac2 = { numerator: fraction2.numerator, denominator: fraction2.denominator };
-
-        // 정답 결정
         const val1 = frac1.numerator / frac1.denominator;
         const val2 = frac2.numerator / frac2.denominator;
         answer = (val1 > val2) ? "first" : "second";
-
-        return {
-          frac1, frac2, answer,
-          userAnswer: null,
-          difficulty
-        };
+        return { frac1, frac2, answer, userAnswer: null, difficulty };
       }
     }
-
-    // ----------------------------------------------------------------
-    // UI 렌더링
-    // ----------------------------------------------------------------
-
     let problems = [];
-
-    // 분수/백분율 버튼 생성
     function createFractionButton(fraction, problemIndex, fractionSide) {
       const problem = problems[problemIndex];
-
-      // Easy + 왼쪽(분수1)인 경우 → 백분율로 표시
       if (problem.difficulty === 'easy' && fractionSide === "first") {
         const btn = document.createElement('div');
         btn.className = 'percentage';
@@ -325,26 +355,22 @@
         });
         return btn;
       } else {
-        // 기본 분수 표기
         const btn = document.createElement('div');
         btn.className = 'fraction';
         const numSpan = document.createElement('span');
         numSpan.className = 'numerator';
         numSpan.textContent = fraction.numerator;
         btn.appendChild(numSpan);
-
         const denSpan = document.createElement('span');
         denSpan.className = 'denominator';
         denSpan.textContent = fraction.denominator;
         btn.appendChild(denSpan);
-
         btn.addEventListener('click', function() {
           selectAnswer(problemIndex, btn, fractionSide);
         });
         return btn;
       }
     }
-
     function selectAnswer(problemIndex, btn, fractionSide) {
       const problemDiv = document.getElementById('problem-' + problemIndex);
       const allButtons = problemDiv.querySelectorAll('.fraction, .percentage');
@@ -352,7 +378,6 @@
       btn.classList.add('selected');
       problems[problemIndex].userAnswer = fractionSide;
     }
-
     function renderProblems() {
       const problemsDiv = document.getElementById('problems');
       problemsDiv.innerHTML = '';
@@ -360,17 +385,13 @@
         const div = document.createElement('div');
         div.className = 'problem';
         div.id = 'problem-' + index;
-
         const frac1Btn = createFractionButton(problem.frac1, index, "first");
         const frac2Btn = createFractionButton(problem.frac2, index, "second");
         div.appendChild(frac1Btn);
         div.appendChild(frac2Btn);
-
         problemsDiv.appendChild(div);
       });
     }
-
-    // 문제 생성
     function generateProblems() {
       const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
       problems = [];
@@ -380,31 +401,63 @@
       renderProblems();
       document.getElementById('result').textContent = "";
     }
-
-    // 채점
     function gradeProblems() {
       let correctCount = 0;
       problems.forEach((problem, index) => {
         const problemDiv = document.getElementById('problem-' + index);
         if (problem.userAnswer === problem.answer) {
           correctCount++;
-          problemDiv.style.backgroundColor = '#d4edda'; // 연한 초록
+          problemDiv.style.backgroundColor = '#d4edda';
         } else {
-          problemDiv.style.backgroundColor = '#f8d7da'; // 연한 빨강
+          problemDiv.style.backgroundColor = '#f8d7da';
         }
       });
       document.getElementById('result').textContent = "정답: " + correctCount + " / 15";
     }
-
-    // 이벤트 연결
     document.getElementById('refresh').addEventListener('click', generateProblems);
     document.getElementById('grade').addEventListener('click', gradeProblems);
     document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
       radio.addEventListener('change', generateProblems);
     });
 
-    // 초기 실행
-    generateProblems();
+    /* ---------- 곱셈 연습 페이지 스크립트 (일의 자리 정렬) ---------- */
+    function generateMulProblem() {
+      const a = Math.floor(Math.random() * 98) + 2; // 2 ~ 99
+      const b = Math.floor(Math.random() * 18) + 2; // 2 ~ 19
+      currentProblem = { a, b, answer: a * b };
+      displayMulProblem();
+    }
+    function displayMulProblem() {
+      const aStr = currentProblem.a.toString();
+      const bStr = currentProblem.b.toString();
+      const maxLen = Math.max(aStr.length, bStr.length);
+      document.getElementById('lineA').textContent = aStr.padStart(maxLen, ' ');
+      document.getElementById('lineB').textContent = bStr.padStart(maxLen, ' ');
+      const inputElem = document.getElementById('answer-input');
+      inputElem.value = '';
+      inputElem.focus();
+      document.getElementById('feedback').textContent = '';
+    }
+    function checkMulAnswer() {
+      const inputElem = document.getElementById('answer-input');
+      const feedbackElem = document.getElementById('feedback');
+      const userAnswer = parseInt(inputElem.value, 10);
+      if (userAnswer === currentProblem.answer) {
+        feedbackElem.textContent = '🟢';
+        setTimeout(generateMulProblem, 500);
+      } else {
+        feedbackElem.textContent = '❌';
+        inputElem.focus();
+      }
+    }
+    document.getElementById('answer-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        checkMulAnswer();
+      }
+    });
+    
+    /* 페이지 로드 시 기본적으로 분수 비교 연습 페이지 표시 */
+    showFractionPage();
   </script>
 </body>
 </html>
