@@ -206,6 +206,7 @@
       text-align: center;
       font-weight: bold;
       margin-top: 10px;
+      height: 1.5em; /* 아이콘 공간 확보 */
     }
   </style>
 </head>
@@ -215,7 +216,7 @@
     <button id="btn-fraction" class="active">분수 비교 연습</button>
     <button id="btn-multiplication">곱셈 연습</button>
     <button id="btn-random-transform">도식 추리</button>
-    <!-- 새로 추가: 알파벳 외우기 버튼 -->
+    <!-- 알파벳 외우기 버튼 -->
     <button id="btn-alphaquiz">알파벳 외우기</button>
   </div>
 
@@ -278,7 +279,7 @@
       <p>예시 변환을 보고 난이도를 선택하세요.</p>
     </div>
     <div id="rt-difficulty-container">
-      난이도: 
+      난이도:
       <label><input type="radio" name="rt-difficulty" value="상"> 상</label>
       <label><input type="radio" name="rt-difficulty" value="하" checked> 하</label>
     </div>
@@ -307,38 +308,38 @@
     <div id="random-feedback" style="text-align:center; font-weight:bold; margin-top:10px;"></div>
   </div>
 
-  <!-- 알파벳 외우기 페이지 (새로 추가) -->
+  <!-- 알파벳 외우기 페이지 -->
   <div id="alphabet-page">
     <div class="header">
       <h1>알파벳 외우기</h1>
     </div>
-    <!-- 난이도 선택: 하 / 상 -->
-    <div id="alpha-difficulty-container">
+    <!-- 난이도 선택: 상 / 중 / 하 (순서대로) -->
+    <div id="alpha-difficulty-container" style="text-align:center;">
       난이도:
-      <label><input type="radio" name="alpha-difficulty" value="하" checked> 하</label>
       <label><input type="radio" name="alpha-difficulty" value="상"> 상</label>
+      <label><input type="radio" name="alpha-difficulty" value="중"> 중</label>
+      <label><input type="radio" name="alpha-difficulty" value="하" checked> 하</label>
     </div>
 
-    <!-- 문제 표시 영역 -->
     <div id="alpha-question"></div>
 
-    <!-- 답안 입력 영역 -->
     <div id="alpha-answer-container">
       <label>정답:</label>
       <input type="text" id="alpha-answer" placeholder="답 입력">
     </div>
-    <!-- 채점 결과 표시 -->
     <div id="alpha-feedback"></div>
   </div>
 
   <script>
-    /* ---------- 분수 비교 연습 로직 ---------- */
+    /********************************************************
+     *                   1) 분수 비교 연습
+     ********************************************************/
     const MIN_DIFF_RATIO = 0.015; // 1.5%
     function randomNumber(isThreeDigit) {
       if (isThreeDigit) {
-        return Math.floor(Math.random() * 900) + 100; // 100 ~ 999
+        return Math.floor(Math.random() * 900) + 100; // 100~999
       } else {
-        return Math.floor(Math.random() * 9000) + 1000; // 1000 ~ 9999
+        return Math.floor(Math.random() * 9000) + 1000; // 1000~9999
       }
     }
     const presetPercentages = [5,5,5,15,20,20,20,25,25,25,30,35,50,50,70,75,75,80,80,85,110,115,120,120,125,125,150];
@@ -414,30 +415,17 @@
         if (Math.abs(targetValue - baseValue) / baseValue < MIN_DIFF_RATIO) {
           continue;
         }
-        const fraction2 = tryBuildFraction2(targetValue, baseFraction);
+        const fraction2 = tryBuildFraction2(targetValue);
         if (fraction2) return fraction2;
       }
     }
-    function tryBuildFraction2(targetValue, baseFraction) {
-      let attempts2 = 0;
-      while (attempts2 < 1000) {
-        attempts2++;
-        const forceCross = Math.random() < 0.8;
-        if (forceCross) {
-          if (Math.random() < 0.5) {
-            const denominator = randomNumber(false);
-            const numerator = Math.round(targetValue * denominator);
-            if (numerator >= 100 && numerator <= 999) return { numerator, denominator };
-          } else {
-            const denominator = randomNumber(true);
-            const numerator = Math.round(targetValue * denominator);
-            if (numerator >= 100 && numerator <= 9999) return { numerator, denominator };
-          }
-        } else {
-          const denomIsThree = Math.random() < 0.5;
-          const denominator = denomIsThree ? randomNumber(true) : randomNumber(false);
-          const numerator = Math.round(targetValue * denominator);
-          if (numerator >= 100 && numerator <= 9999) return { numerator, denominator };
+    function tryBuildFraction2(targetValue) {
+      for (let attempt = 0; attempt < 1000; attempt++) {
+        let denomIs3 = Math.random() < 0.5;
+        let denominator = denomIs3 ? Math.floor(Math.random() * 900) + 100 : Math.floor(Math.random() * 9000) + 1000;
+        let numerator = Math.round(targetValue * denominator);
+        if (numerator >= 100 && numerator <= 9999) {
+          return { numerator, denominator };
         }
       }
       return null;
@@ -541,8 +529,10 @@
       radio.addEventListener('change', generateProblems);
     });
 
-    /* ---------- 곱셈 연습 ---------- */
-    let currentProblem = null; // 전역 문제 정보
+    /********************************************************
+     *                   2) 곱셈 연습
+     ********************************************************/
+    let currentProblem = null; // 곱셈 문제 정보
     function generateMulProblem() {
       const amin = parseInt(document.getElementById("rangeAmin").value, 10);
       const amax = parseInt(document.getElementById("rangeAmax").value, 10);
@@ -599,7 +589,9 @@
       }
     });
 
-    /* ---------- 랜덤변환 퀴즈 ---------- */
+    /********************************************************
+     *                   3) 랜덤변환 퀴즈
+     ********************************************************/
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -748,7 +740,7 @@
           let origLetter = possibleLetters[Math.floor(Math.random() * possibleLetters.length)];
           chosenLetters.push(origLetter);
           newOriginalArr.push(origLetter);
-          let shift = allowedShifts[i];
+          let shift = currentIncrementShifts[i];
           newTransformedArr.push(shiftLetter(origLetter, shift));
         }
       }
@@ -799,13 +791,19 @@
       document.getElementById("random-feedback").textContent = "";
     }
     document.getElementById("increment-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") gradeRandomTransformProblem();
+      if (e.key === "Enter") {
+        gradeRandomTransformProblem();
+      }
     });
     document.getElementById("order-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") gradeRandomTransformProblem();
+      if (e.key === "Enter") {
+        gradeRandomTransformProblem();
+      }
     });
     document.getElementById("high-answer-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") gradeRandomTransformProblem();
+      if (e.key === "Enter") {
+        gradeRandomTransformProblem();
+      }
     });
     function gradeRandomTransformProblem() {
       let feedback = "";
@@ -861,38 +859,98 @@
       radio.addEventListener("change", generateRandomTransformProblem);
     });
 
-    /* ---------- 알파벳 외우기 ---------- */
-    // 난이도: '하' -> A => 입력: 1
-    // 난이도: '상' -> A - B => 입력: (1 - 2) = -1
+    /********************************************************
+     *                   4) 알파벳 외우기
+     ********************************************************/
+    // 난이도:
+    //   하: 알파벳 한 글자 => A→1 (사용자에게 숫자를 입력하게 함)
+    //   중: 숫자(1~26) => 1 => A (사용자에게 알파벳을 입력)
+    //   상: 알파벳 - 알파벳 => -1 등
+    //
+    //   + 최근 10문제 중복 방지 (중, 하)
+
     let alphaDifficulty = "하";
-    let currentAlphaQuestion = ""; // 예: "A" or "A - B"
-    let currentAlphaAnswer = "";   // 문자열 형태(예: "1", "-1")
-    // 문제 생성 함수
+    let currentAlphaQuestion = ""; // 예: "A" or "A - B" or "13"
+    let currentAlphaAnswer = "";   // 예: "1", "-1", "M"
+    
+    // 최근 10문제 (하, 중만 관리; 상은 중복 방지 X)
+    //   - 하 => 저장할 값: letter 인덱스 (0~25)
+    //   - 중 => 저장할 값: number (1~26)
+    let recentAlphaLower = []; // 하 (letter index)
+    let recentAlphaMid = [];   // 중 (1~26)
+
     function generateAlphaProblem() {
       alphaDifficulty = document.querySelector('input[name="alpha-difficulty"]:checked').value;
       const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
       if (alphaDifficulty === "하") {
-        // 한 알파벳
-        let randIndex = Math.floor(Math.random() * 26);
-        let letter = alpha[randIndex]; // 예: "C"
-        currentAlphaQuestion = letter; // 예: "C"
-        currentAlphaAnswer = (randIndex + 1).toString(); // 예: "3" (C는 3번째)
+        // 하: 한 알파벳을 표시 => 답은 그 알파벳의 번호(1~26)
+        let maxAttempts = 1000;
+        let idx = -1;
+        for (let attempt=0; attempt<maxAttempts; attempt++){
+          let candidate = Math.floor(Math.random()*26); // 0~25
+          if (!recentAlphaLower.includes(candidate)) {
+            idx = candidate;
+            break;
+          }
+        }
+        if (idx<0) {
+          // 만약 1000번 안에 못찾으면 그냥 랜덤
+          idx = Math.floor(Math.random()*26);
+        }
+        // 갱신: recentAlphaLower
+        recentAlphaLower.push(idx);
+        if (recentAlphaLower.length>10) {
+          recentAlphaLower.shift(); // 10개 초과시 맨 앞 제거
+        }
+
+        let letter = alpha[idx];
+        currentAlphaQuestion = letter; 
+        currentAlphaAnswer = (idx+1).toString(); 
         document.getElementById("alpha-question").textContent = letter + " → ?";
-      } else {
-        // 두 알파벳 뺄셈
-        let randIndex1 = Math.floor(Math.random() * 26);
-        let randIndex2 = Math.floor(Math.random() * 26);
+      }
+      else if (alphaDifficulty === "중") {
+        // 숫자(1~26) 제시 => 답은 알파벳
+        let maxAttempts = 1000;
+        let num = -1;
+        for (let attempt=0; attempt<maxAttempts; attempt++){
+          let candidate = Math.floor(Math.random()*26)+1; // 1..26
+          if (!recentAlphaMid.includes(candidate)) {
+            num = candidate;
+            break;
+          }
+        }
+        if (num<0) {
+          // 1000번 중 못찾으면 그냥 선택
+          num = Math.floor(Math.random()*26)+1;
+        }
+        recentAlphaMid.push(num);
+        if (recentAlphaMid.length>10) {
+          recentAlphaMid.shift();
+        }
+
+        currentAlphaQuestion = num.toString();  // 예: "13"
+        let letter = alpha[num-1];             // 1=>A(0), 2=>B(1) ...
+        currentAlphaAnswer = letter; 
+        document.getElementById("alpha-question").textContent = num + " → ?";
+      }
+      else {
+        // 상: 알파벳 두 개 => 뺄셈
+        let randIndex1 = Math.floor(Math.random()*26);
+        let randIndex2 = Math.floor(Math.random()*26);
         let letter1 = alpha[randIndex1];
         let letter2 = alpha[randIndex2];
+        let diff = (randIndex1+1) - (randIndex2+1); 
         currentAlphaQuestion = letter1 + " - " + letter2;
-        let diff = (randIndex1 + 1) - (randIndex2 + 1); // 예: A-B => (1-2)= -1
-        currentAlphaAnswer = diff.toString();          // 예: "-1"
+        currentAlphaAnswer = diff.toString();
         document.getElementById("alpha-question").textContent = letter1 + " - " + letter2 + " = ?";
       }
+
       document.getElementById("alpha-answer").value = "";
       document.getElementById("alpha-feedback").textContent = "";
       document.getElementById("alpha-answer").focus();
     }
+
     // 채점
     function checkAlphaAnswer() {
       let user = document.getElementById("alpha-answer").value.trim();
@@ -905,27 +963,29 @@
         document.getElementById("alpha-answer").focus();
       }
     }
-    // 엔터키로 제출
     document.getElementById("alpha-answer").addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         checkAlphaAnswer();
       }
     });
-    // 난이도 변경 시 자동 새 문제
     document.querySelectorAll('input[name="alpha-difficulty"]').forEach(radio => {
       radio.addEventListener("change", generateAlphaProblem);
     });
 
-    /* ---------- 페이지 전환 함수들 ---------- */
+    /********************************************************
+     *                   페이지 전환 함수들
+     ********************************************************/
     function showFractionPage() {
       document.getElementById("fraction-page").style.display = "block";
       document.getElementById("multiplication-page").style.display = "none";
       document.getElementById("random-transform-page").style.display = "none";
       document.getElementById("alphabet-page").style.display = "none";
+
       document.getElementById("btn-fraction").classList.add("active");
       document.getElementById("btn-multiplication").classList.remove("active");
       document.getElementById("btn-random-transform").classList.remove("active");
       document.getElementById("btn-alphaquiz").classList.remove("active");
+
       generateProblems();
     }
     function showMultiplicationPage() {
@@ -933,10 +993,12 @@
       document.getElementById("multiplication-page").style.display = "block";
       document.getElementById("random-transform-page").style.display = "none";
       document.getElementById("alphabet-page").style.display = "none";
+
       document.getElementById("btn-multiplication").classList.add("active");
       document.getElementById("btn-fraction").classList.remove("active");
       document.getElementById("btn-random-transform").classList.remove("active");
       document.getElementById("btn-alphaquiz").classList.remove("active");
+
       generateMulProblem();
     }
     function showRandomTransformPage() {
@@ -944,26 +1006,29 @@
       document.getElementById("multiplication-page").style.display = "none";
       document.getElementById("alphabet-page").style.display = "none";
       document.getElementById("random-transform-page").style.display = "block";
+
       document.getElementById("btn-random-transform").classList.add("active");
       document.getElementById("btn-fraction").classList.remove("active");
       document.getElementById("btn-multiplication").classList.remove("active");
       document.getElementById("btn-alphaquiz").classList.remove("active");
+
       generateRandomTransformProblem();
     }
-    // 새로 추가: 알파벳 외우기 페이지 보이기
     function showAlphaQuizPage() {
       document.getElementById("fraction-page").style.display = "none";
       document.getElementById("multiplication-page").style.display = "none";
       document.getElementById("random-transform-page").style.display = "none";
       document.getElementById("alphabet-page").style.display = "block";
+
       document.getElementById("btn-alphaquiz").classList.add("active");
       document.getElementById("btn-fraction").classList.remove("active");
       document.getElementById("btn-multiplication").classList.remove("active");
       document.getElementById("btn-random-transform").classList.remove("active");
+
       generateAlphaProblem();
     }
 
-    // 네비게이션 버튼 이벤트
+    // 네비게이션 버튼
     document.getElementById("btn-fraction").addEventListener("click", showFractionPage);
     document.getElementById("btn-multiplication").addEventListener("click", showMultiplicationPage);
     document.getElementById("btn-random-transform").addEventListener("click", showRandomTransformPage);
@@ -973,7 +1038,7 @@
     document.getElementById("new-random-problem").addEventListener("click", generateRandomTransformProblem);
     document.getElementById("grade-random-problem").addEventListener("click", gradeRandomTransformProblem);
 
-    // 페이지 첫 진입 시, 분수 비교 연습 페이지를 기본으로 보여줌
+    // 첫 진입 시, 분수 비교 연습 페이지를 기본으로
     showFractionPage();
   </script>
 </body>
