@@ -39,6 +39,7 @@
       color: white;
       border: none;
     }
+
     /* 분수 비교 연습 페이지 */
     #fraction-page {
       display: none;
@@ -91,6 +92,7 @@
       margin-top: 10px;
       font-weight: bold;
     }
+
     /* 곱셈 연습 페이지 */
     #multiplication-page {
       display: none;
@@ -105,8 +107,8 @@
     }
     .numbers {
       display: inline-block;
-      text-align: right;  /* 내부의 숫자와 입력란을 오른쪽 정렬 */
-      font-family: "Courier New", Courier, monospace; /* 모노스페이스 폰트로 자릿수 일치 */
+      text-align: right;
+      font-family: "Courier New", Courier, monospace;
     }
     .number {
       display: block;
@@ -118,53 +120,46 @@
       text-align: right;
       margin-top: 10px;
     }
-    /* 입력란은 고정 폭(5ch)으로 설정하여 문제마다 폭이 변하지 않음 */
     .answer-input {
       font-size: 2em;
       text-align: right;
       width: 5ch;
       position: relative;
-      left: 42px;  
+      left: 42px;
       font-family: "Courier New", Courier, monospace;
     }
-    /* 피드백 아이콘 영역에 고정 폭(24px)을 부여 */
     .feedback {
       display: inline-block;
       width: 24px;
       text-align: center;
       margin-left: 5px;
       position: relative;
-      left: 30px;  
+      left: 30px;
     }
-    /* 스피너 제거 (Chrome, Safari, Edge, Opera) */
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
-    /* 스피너 제거 (Firefox) */
     input[type=number] {
       -moz-appearance: textfield;
     }
-    /* 랜덤변환 퀴즈 페이지 추가 */
+
+    /* 랜덤변환 퀴즈 페이지 */
     #random-transform-page {
       display: none;
       margin-top: 40px;
     }
-    /* 난이도 선택 영역 (순서: 상 / 하 → 상이 왼쪽, 하가 오른쪽) */
     #rt-difficulty-container {
       text-align: center;
       margin-bottom: 10px;
     }
-    /* 변환 예시 영역 */
     #random-transform-display {
       text-align: center;
       font-size: 1.5em;
       margin: 20px;
     }
-    /* 하 난이도 입력 영역 */
-    #rt-low-inputs, 
-    /* 상 난이도 입력 영역 */
+    #rt-low-inputs,
     #rt-high-inputs {
       text-align: center;
       margin: 10px;
@@ -176,11 +171,41 @@
       width: 250px;
       margin-left: 10px;
     }
-    /* 상 난이도: 출제코드 표시 영역 */
     #new-code-display {
       text-align: center;
       font-size: 1.5em;
       margin: 20px;
+    }
+
+    /* 알파벳 외우기 페이지 */
+    #alphabet-page {
+      display: none;
+      margin-top: 40px;
+    }
+    #alpha-difficulty-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #alpha-question {
+      text-align: center;
+      font-size: 2em;
+      margin: 20px;
+    }
+    #alpha-answer-container {
+      text-align: center;
+      margin: 10px;
+    }
+    #alpha-answer {
+      font-size: 1.2em;
+      width: 100px;
+      text-align: center;
+      margin-left: 10px;
+    }
+    #alpha-feedback {
+      display: block;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -190,9 +215,11 @@
     <button id="btn-fraction" class="active">분수 비교 연습</button>
     <button id="btn-multiplication">곱셈 연습</button>
     <button id="btn-random-transform">도식 추리</button>
+    <!-- 새로 추가: 알파벳 외우기 버튼 -->
+    <button id="btn-alphaquiz">알파벳 외우기</button>
   </div>
 
-  <!-- 분수 비교 연습 페이지 (기존) -->
+  <!-- 분수 비교 연습 페이지 -->
   <div id="fraction-page">
     <div class="header">
       <h1>분수 비교 연습</h1>
@@ -210,12 +237,28 @@
     </div>
   </div>
 
-  <!-- 곱셈 연습 페이지 (기존) -->
+  <!-- 곱셈 연습 페이지 -->
   <div id="multiplication-page">
     <div class="mul-header">
       <h1>곱셈 연습</h1>
       <p>아래의 곱셈 문제를 풀고 엔터키로 정답을 제출하세요.</p>
     </div>
+
+    <!-- 곱셈 범위 설정 UI -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <label>첫 번째 수 범위:
+        <input type="number" id="rangeAmin" value="2" style="width:60px;">
+        ~
+        <input type="number" id="rangeAmax" value="99" style="width:60px;">
+      </label>
+      <br><br>
+      <label>두 번째 수 범위:
+        <input type="number" id="rangeBmin" value="2" style="width:60px;">
+        ~
+        <input type="number" id="rangeBmax" value="19" style="width:60px;">
+      </label>
+    </div>
+
     <div class="numbers-container">
       <div class="numbers">
         <div id="lineA" class="number"></div>
@@ -228,23 +271,18 @@
     </div>
   </div>
 
-  <!-- 랜덤변환 퀴즈 페이지 추가 -->
+  <!-- 랜덤변환 퀴즈 페이지 -->
   <div id="random-transform-page">
     <div class="header">
       <h1>도식추리 퀴즈</h1>
       <p>예시 변환을 보고 난이도를 선택하세요.</p>
     </div>
-    <!-- 난이도 선택 (순서: 상 / 하 → 상이 왼쪽, 하가 오른쪽) -->
     <div id="rt-difficulty-container">
       난이도: 
       <label><input type="radio" name="rt-difficulty" value="상"> 상</label>
       <label><input type="radio" name="rt-difficulty" value="하" checked> 하</label>
     </div>
-    <!-- 변환 예시 영역 (항상 표시) -->
-    <div id="random-transform-display">
-      <!-- 예: AB12 → CD34 -->
-    </div>
-    <!-- 하 난이도 입력 영역: 기존과 같이 규칙 입력 -->
+    <div id="random-transform-display"></div>
     <div id="rt-low-inputs">
       <div class="input-group">
         <label>증감변환:</label>
@@ -255,11 +293,8 @@
         <input type="text" id="order-input" placeholder="예: 4213">
       </div>
     </div>
-    <!-- 상 난이도 입력 영역: 출제코드 옆에 '→ ?' 표시 -->
     <div id="rt-high-inputs" style="display:none;">
-      <div id="new-code-display">
-        <!-- 출제코드가 "출제코드 → ?" 형식으로 표시됨 -->
-      </div>
+      <div id="new-code-display"></div>
       <div class="input-group">
         <label>변환 결과:</label>
         <input type="text" id="high-answer-input" placeholder="변환 결과 입력">
@@ -272,8 +307,32 @@
     <div id="random-feedback" style="text-align:center; font-weight:bold; margin-top:10px;"></div>
   </div>
 
+  <!-- 알파벳 외우기 페이지 (새로 추가) -->
+  <div id="alphabet-page">
+    <div class="header">
+      <h1>알파벳 외우기</h1>
+    </div>
+    <!-- 난이도 선택: 하 / 상 -->
+    <div id="alpha-difficulty-container">
+      난이도:
+      <label><input type="radio" name="alpha-difficulty" value="하" checked> 하</label>
+      <label><input type="radio" name="alpha-difficulty" value="상"> 상</label>
+    </div>
+
+    <!-- 문제 표시 영역 -->
+    <div id="alpha-question"></div>
+
+    <!-- 답안 입력 영역 -->
+    <div id="alpha-answer-container">
+      <label>정답:</label>
+      <input type="text" id="alpha-answer" placeholder="답 입력">
+    </div>
+    <!-- 채점 결과 표시 -->
+    <div id="alpha-feedback"></div>
+  </div>
+
   <script>
-    /* ---------- 기존 스크립트 (분수, 곱셈 연습) ---------- */
+    /* ---------- 분수 비교 연습 로직 ---------- */
     const MIN_DIFF_RATIO = 0.015; // 1.5%
     function randomNumber(isThreeDigit) {
       if (isThreeDigit) {
@@ -482,10 +541,32 @@
       radio.addEventListener('change', generateProblems);
     });
 
-    /* ---------- 곱셈 연습 페이지 스크립트 ---------- */
+    /* ---------- 곱셈 연습 ---------- */
+    let currentProblem = null; // 전역 문제 정보
     function generateMulProblem() {
-      const a = Math.floor(Math.random() * 98) + 2; // 2 ~ 99
-      const b = Math.floor(Math.random() * 18) + 2; // 2 ~ 19
+      const amin = parseInt(document.getElementById("rangeAmin").value, 10);
+      const amax = parseInt(document.getElementById("rangeAmax").value, 10);
+      const bmin = parseInt(document.getElementById("rangeBmin").value, 10);
+      const bmax = parseInt(document.getElementById("rangeBmax").value, 10);
+
+      let validA = (!isNaN(amin) && !isNaN(amax) && amin <= amax);
+      let validB = (!isNaN(bmin) && !isNaN(bmax) && bmin <= bmax);
+
+      let finalAmin = 2, finalAmax = 99;
+      let finalBmin = 2, finalBmax = 19;
+
+      if (!validA || !validB) {
+        alert("입력한 범위가 올바르지 않아 기본값(2~99, 2~19)을 사용합니다.");
+      } else {
+        finalAmin = amin;
+        finalAmax = amax;
+        finalBmin = bmin;
+        finalBmax = bmax;
+      }
+
+      const a = Math.floor(Math.random() * (finalAmax - finalAmin + 1)) + finalAmin;
+      const b = Math.floor(Math.random() * (finalBmax - finalBmin + 1)) + finalBmin;
+
       currentProblem = { a, b, answer: a * b };
       displayMulProblem();
     }
@@ -518,8 +599,7 @@
       }
     });
 
-    /* ---------- 랜덤변환 퀴즈 스크립트 ---------- */
-    // Helper: 배열 섞기
+    /* ---------- 랜덤변환 퀴즈 ---------- */
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -527,26 +607,22 @@
       }
       return array;
     }
-    // Helper: 알파벳 시프트 (순환 처리)
     function shiftLetter(letter, shift) {
       const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       let index = alpha.indexOf(letter);
       index = (index + shift + 26) % 26;
       return alpha[index];
     }
-    // 전역 변수들
-    let currentTransformType; // "증감" 또는 "순서"
+    let currentTransformType;
     let currentOriginalCode = "";
     let currentTransformedCode = "";
-    let expectedIncrementRule = ""; // 예: "2 -1 3 -2"
-    let expectedOrderRule = "";     // 예: "4213"
-    // 상 난이도용 전역 변수
+    let expectedIncrementRule = "";
+    let expectedOrderRule = "";
     let currentRTDifficulty = "하";
-    let currentIncrementTypes = [];   // 각 자리의 타입 ("digit" 또는 "letter")
-    let currentIncrementShifts = [];  // 각 자리의 증감값
-    let expectedHighAnswer = "";      // 상 난이도일 때, 출제코드에 적용한 결과
+    let currentIncrementTypes = [];
+    let currentIncrementShifts = [];
+    let expectedHighAnswer = "";
 
-    // 기본 코드 생성 (숫자2, 알파벳2, 중복 없이)
     function generateBasicCode() {
       let digits = [];
       while (digits.length < 2) {
@@ -563,8 +639,6 @@
       shuffleArray(codeArr);
       return codeArr.join("");
     }
-
-    // 증감변환 문제 생성 (예시용)
     function generateIncrementProblem() {
       let types = ["digit", "digit", "letter", "letter"];
       shuffleArray(types);
@@ -604,7 +678,7 @@
           originalArr.push(origDigit.toString());
           transformedArr.push((origDigit + shift).toString());
           incrementRules.push(shift);
-        } else { // letter
+        } else {
           const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
           let possibleLetters = [];
           for (let j = 0; j < alpha.length; j++) {
@@ -624,8 +698,6 @@
       expectedIncrementRule = incrementRules.map(v => v.toString()).join(" ");
       currentIncrementShifts = incrementRules.slice();
     }
-
-    // 순서변환 문제 생성 (예시용)
     function generateOrderProblem() {
       currentOriginalCode = generateBasicCode();
       let positions;
@@ -642,8 +714,6 @@
       let originalArr = currentOriginalCode.split("");
       currentTransformedCode = positions.map(pos => originalArr[pos - 1]).join("");
     }
-
-    // 상 난이도: 증감 변환 출제코드 생성 (같은 타입 및 증감 rule 사용)
     function generateNewIncrementForHigh() {
       let newOriginalArr = [];
       let newTransformedArr = [];
@@ -659,6 +729,11 @@
           let possible = [];
           for (let d = minVal; d <= maxVal; d++) {
             if (!chosenDigits.includes(d)) possible.push(d);
+          }
+          if (possible.length === 0) {
+            for (let d = 0; d <= 9; d++) {
+              if (!chosenDigits.includes(d)) possible.push(d);
+            }
           }
           let origDigit = possible[Math.floor(Math.random() * possible.length)];
           chosenDigits.push(origDigit);
@@ -682,16 +757,12 @@
         transformed: newTransformedArr.join("")
       };
     }
-
-    // 상 난이도: 순서 변환 출제코드 생성 (기존 rule 적용)
     function generateNewOrderForHigh() {
       let newOriginal = generateBasicCode();
       let originalArr = newOriginal.split("");
       let newTransformed = expectedOrderRule.split("").map(pos => originalArr[pos - 1]).join("");
       return { original: newOriginal, transformed: newTransformed };
     }
-
-    // 랜덤변환 문제 생성 (난이도에 따라 분기)
     function generateRandomTransformProblem() {
       currentRTDifficulty = document.querySelector('input[name="rt-difficulty"]:checked').value;
       if (currentRTDifficulty === "하") {
@@ -727,25 +798,15 @@
       }
       document.getElementById("random-feedback").textContent = "";
     }
-
-    // 엔터키 제출 이벤트 (하 난이도)
     document.getElementById("increment-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        gradeRandomTransformProblem();
-      }
+      if (e.key === "Enter") gradeRandomTransformProblem();
     });
     document.getElementById("order-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        gradeRandomTransformProblem();
-      }
+      if (e.key === "Enter") gradeRandomTransformProblem();
     });
-    // 엔터키 제출 이벤트 (상 난이도)
     document.getElementById("high-answer-input").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        gradeRandomTransformProblem();
-      }
+      if (e.key === "Enter") gradeRandomTransformProblem();
     });
-
     function gradeRandomTransformProblem() {
       let feedback = "";
       if (currentRTDifficulty === "하") {
@@ -796,47 +857,123 @@
       }
       document.getElementById("random-feedback").textContent = feedback;
     }
-
-    // 난이도 라디오 버튼 (rt-difficulty) 변경 시 자동 새 문제 생성
     document.querySelectorAll('input[name="rt-difficulty"]').forEach(radio => {
       radio.addEventListener("change", generateRandomTransformProblem);
     });
 
-    /* ---------- 페이지 전환 함수 ---------- */
+    /* ---------- 알파벳 외우기 ---------- */
+    // 난이도: '하' -> A => 입력: 1
+    // 난이도: '상' -> A - B => 입력: (1 - 2) = -1
+    let alphaDifficulty = "하";
+    let currentAlphaQuestion = ""; // 예: "A" or "A - B"
+    let currentAlphaAnswer = "";   // 문자열 형태(예: "1", "-1")
+    // 문제 생성 함수
+    function generateAlphaProblem() {
+      alphaDifficulty = document.querySelector('input[name="alpha-difficulty"]:checked').value;
+      const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      if (alphaDifficulty === "하") {
+        // 한 알파벳
+        let randIndex = Math.floor(Math.random() * 26);
+        let letter = alpha[randIndex]; // 예: "C"
+        currentAlphaQuestion = letter; // 예: "C"
+        currentAlphaAnswer = (randIndex + 1).toString(); // 예: "3" (C는 3번째)
+        document.getElementById("alpha-question").textContent = letter + " → ?";
+      } else {
+        // 두 알파벳 뺄셈
+        let randIndex1 = Math.floor(Math.random() * 26);
+        let randIndex2 = Math.floor(Math.random() * 26);
+        let letter1 = alpha[randIndex1];
+        let letter2 = alpha[randIndex2];
+        currentAlphaQuestion = letter1 + " - " + letter2;
+        let diff = (randIndex1 + 1) - (randIndex2 + 1); // 예: A-B => (1-2)= -1
+        currentAlphaAnswer = diff.toString();          // 예: "-1"
+        document.getElementById("alpha-question").textContent = letter1 + " - " + letter2 + " = ?";
+      }
+      document.getElementById("alpha-answer").value = "";
+      document.getElementById("alpha-feedback").textContent = "";
+      document.getElementById("alpha-answer").focus();
+    }
+    // 채점
+    function checkAlphaAnswer() {
+      let user = document.getElementById("alpha-answer").value.trim();
+      let feedbackElem = document.getElementById("alpha-feedback");
+      if (user === currentAlphaAnswer) {
+        feedbackElem.textContent = "🟢";
+        setTimeout(generateAlphaProblem, 300);
+      } else {
+        feedbackElem.textContent = "❌";
+        document.getElementById("alpha-answer").focus();
+      }
+    }
+    // 엔터키로 제출
+    document.getElementById("alpha-answer").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        checkAlphaAnswer();
+      }
+    });
+    // 난이도 변경 시 자동 새 문제
+    document.querySelectorAll('input[name="alpha-difficulty"]').forEach(radio => {
+      radio.addEventListener("change", generateAlphaProblem);
+    });
+
+    /* ---------- 페이지 전환 함수들 ---------- */
     function showFractionPage() {
       document.getElementById("fraction-page").style.display = "block";
       document.getElementById("multiplication-page").style.display = "none";
       document.getElementById("random-transform-page").style.display = "none";
+      document.getElementById("alphabet-page").style.display = "none";
       document.getElementById("btn-fraction").classList.add("active");
       document.getElementById("btn-multiplication").classList.remove("active");
       document.getElementById("btn-random-transform").classList.remove("active");
+      document.getElementById("btn-alphaquiz").classList.remove("active");
       generateProblems();
     }
     function showMultiplicationPage() {
       document.getElementById("fraction-page").style.display = "none";
       document.getElementById("multiplication-page").style.display = "block";
       document.getElementById("random-transform-page").style.display = "none";
+      document.getElementById("alphabet-page").style.display = "none";
       document.getElementById("btn-multiplication").classList.add("active");
       document.getElementById("btn-fraction").classList.remove("active");
       document.getElementById("btn-random-transform").classList.remove("active");
+      document.getElementById("btn-alphaquiz").classList.remove("active");
       generateMulProblem();
     }
     function showRandomTransformPage() {
       document.getElementById("fraction-page").style.display = "none";
       document.getElementById("multiplication-page").style.display = "none";
+      document.getElementById("alphabet-page").style.display = "none";
       document.getElementById("random-transform-page").style.display = "block";
       document.getElementById("btn-random-transform").classList.add("active");
       document.getElementById("btn-fraction").classList.remove("active");
       document.getElementById("btn-multiplication").classList.remove("active");
+      document.getElementById("btn-alphaquiz").classList.remove("active");
       generateRandomTransformProblem();
     }
+    // 새로 추가: 알파벳 외우기 페이지 보이기
+    function showAlphaQuizPage() {
+      document.getElementById("fraction-page").style.display = "none";
+      document.getElementById("multiplication-page").style.display = "none";
+      document.getElementById("random-transform-page").style.display = "none";
+      document.getElementById("alphabet-page").style.display = "block";
+      document.getElementById("btn-alphaquiz").classList.add("active");
+      document.getElementById("btn-fraction").classList.remove("active");
+      document.getElementById("btn-multiplication").classList.remove("active");
+      document.getElementById("btn-random-transform").classList.remove("active");
+      generateAlphaProblem();
+    }
+
+    // 네비게이션 버튼 이벤트
     document.getElementById("btn-fraction").addEventListener("click", showFractionPage);
     document.getElementById("btn-multiplication").addEventListener("click", showMultiplicationPage);
     document.getElementById("btn-random-transform").addEventListener("click", showRandomTransformPage);
+    document.getElementById("btn-alphaquiz").addEventListener("click", showAlphaQuizPage);
+
+    // 랜덤변환 페이지 내 새 문제, 채점 버튼
     document.getElementById("new-random-problem").addEventListener("click", generateRandomTransformProblem);
     document.getElementById("grade-random-problem").addEventListener("click", gradeRandomTransformProblem);
 
-    // 기본 페이지는 분수 비교 연습 페이지
+    // 페이지 첫 진입 시, 분수 비교 연습 페이지를 기본으로 보여줌
     showFractionPage();
   </script>
 </body>
