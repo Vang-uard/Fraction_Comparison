@@ -883,11 +883,11 @@
       const inputElem = document.getElementById('alpha-answer');
       alphaDifficulty = document.querySelector('input[name="alpha-difficulty"]:checked').value;
         if (alphaDifficulty === "하") {
-    inputElem.placeholder = "예: A → 1";
+    inputElem.placeholder = "숫자 입력";
   } else if (alphaDifficulty === "중") {
-    inputElem.placeholder = "예: Q - 3 = ?";
+    inputElem.placeholder = "알파벳 입력";
   } else { // 상
-    inputElem.placeholder = "예: A - B = -1";
+    inputElem.placeholder = "숫자 입력";
   }
       const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -919,31 +919,35 @@
         document.getElementById("alpha-question").textContent = letter + " → ?";
       }
       else if (alphaDifficulty === "중") {
-                 inputElem.placeholder = "알파벳 입력";
+      // 1) 함수 속성으로 토글 상태 저장
+      if (typeof generateAlphaProblem.midToggle === 'undefined') {
+      generateAlphaProblem.midToggle = true; // 첫엔 덧셈
+    }
+    const sign = generateAlphaProblem.midToggle ? '+' : '-';
+    generateAlphaProblem.midToggle = !generateAlphaProblem.midToggle;
 
-        // 숫자(1~26) 제시 => 답은 알파벳
-        let maxAttempts = 1000;
-        let num = -1;
-        for (let attempt=0; attempt<maxAttempts; attempt++){
-          let candidate = Math.floor(Math.random()*26)+1; // 1..26
-          if (!recentAlphaMid.includes(candidate)) {
-            num = candidate;
-            break;
-          }
-        }
-        if (num<0) {
-          // 1000번 중 못찾으면 그냥 선택
-          num = Math.floor(Math.random()*26)+1;
-        }
-        recentAlphaMid.push(num);
-        if (recentAlphaMid.length>10) {
-          recentAlphaMid.shift();
-        }
+    // 2) shift 값 (1~5)
+    const shift = Math.floor(Math.random() * 5) + 1;
 
-        currentAlphaQuestion = num.toString();  // 예: "13"
-        let letter = alpha[num-1];             // 1=>A(0), 2=>B(1) ...
-        currentAlphaAnswer = letter; 
-        document.getElementById("alpha-question").textContent = num + " → ?";
+    // 3) baseIdx 범위 조정
+    let baseIdx;
+    if (sign === '+') {
+      // 덧셈이면 A(0)~U(20) 범위에서만
+      baseIdx = Math.floor(Math.random() * 21); // 0..20
+    } else {
+      // 뺄셈이면 F(5)~Z(25) 범위에서만
+      baseIdx = Math.floor(Math.random() * 21) + 5; // 5..25
+    }
+    const baseLetter = alpha[baseIdx];
+
+    // 4) 결과 인덱스 계산 (모듈로 불필요)
+    const resultIdx = sign === '+'
+      ? baseIdx + shift       // 항상 <= 20+5=25
+      : baseIdx - shift;      // 항상 >= 5-5=0
+
+    currentAlphaQuestion = `${baseLetter} ${sign} ${shift} = ?`;
+    currentAlphaAnswer   = alpha[resultIdx];
+    document.getElementById("alpha-question").textContent = currentAlphaQuestion;
       }
       else {
         // 상: 알파벳 두 개 => 뺄셈
@@ -962,11 +966,17 @@
       document.getElementById("alpha-answer").value = "";
       document.getElementById("alpha-feedback").textContent = "";
       document.getElementById("alpha-answer").focus();
+
+
+
     }
 
     // 채점
     function checkAlphaAnswer() {
-      let user = document.getElementById("alpha-answer").value.trim();
+      let user = document.getElementById("alpha-answer")
+                  .value
+                  .trim()
+                  .toUpperCase();
       let feedbackElem = document.getElementById("alpha-feedback");
       if (user === currentAlphaAnswer) {
         feedbackElem.textContent = "🟢";
