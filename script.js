@@ -657,6 +657,43 @@ function gradeRandomTransformProblem() {
 ==================================================
 */
 
+
+// ### 4-0. 알파벳 팁 데이터베이스 ###
+// 나중에 팁을 추가/수정할 때 이 부분만 건드리면 됩니다.
+// type이 'image'이면 alpha_tips 폴더의 이미지 파일을, 'text'이면 문장을 보여줍니다.
+const alphabetTips = {
+    'A': { type: 'text', content: '1번째 알파벳!' },
+ //   'B': { type: 'text', content: 'B는 "Bee"(벌)가 날아가는 모양을 연상해보세요!' },
+ //   'C': { type: 'text', content: 'C.jpg' },
+ //   'D': { type: 'text', content: 'D는 "Drum"(드럼)의 옆모습과 비슷해요.'},
+ //   'E': { type: 'image', content: 'E_tip.gif' },
+ //   'F': { type: 'text', content: 'Fuck 6!!' },
+ //   'G': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
+    'H': { type: 'text', content: '에이 치팔~' },
+    'I': { type: 'text', content: '아이구~ 아이구~' },
+ //   'J': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
+    'K': { type: 'image', content: 'K.png' },
+    'L': { type: 'image', content: 'L.png'},
+    'M': { type: 'image', content: 'M.png' },
+    'N': { type: 'image', content: 'N.png' },
+    'O': { type: 'text', content: 'O는 오, 5' },
+    'P': { type: 'image', content: 'P.png' },
+    'Q': { type: 'text', content: '퀸(Q)은 특별한 럭키 세븐)' },
+    'R': { type: 'image', content: 'R.png' },
+    'S': { type: 'text', content: 'S는 19금' },
+    'T': { type: 'text', content: '큰 짝대기 두개, 20' },
+   // 'U': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
+   // 'V': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
+    'W': { type: 'image', content: 'M.png' },
+    'X': { type: 'text', content: '네잎클로버' },
+   // 'Y': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
+    'Z': { type: 'text', content: '26개 알파벳 중 마지막!' }
+
+};
+
+
+
+
 // ### 4-1. 전역 변수 ###
 // 4-1-1. 문제 상태 저장용 전역 변수
 let alphaDifficulty = "하";
@@ -718,8 +755,10 @@ function generateAlphaProblem() {
 
   inputElem.value = "";
   document.getElementById("alpha-feedback").textContent = "";
+  document.getElementById('alpha-tip-container').style.display = 'none'; 
   inputElem.focus();
 }
+
 
 /**
  * 4-2-2. 사용자 정답을 확인하고 피드백을 줍니다.
@@ -727,13 +766,58 @@ function generateAlphaProblem() {
 function checkAlphaAnswer() {
   let user = document.getElementById("alpha-answer").value.trim().toUpperCase();
   let feedbackElem = document.getElementById("alpha-feedback");
+  const tipContainer = document.getElementById('alpha-tip-container');
+
   if (user === currentAlphaAnswer) {
     feedbackElem.textContent = "🟢";
+    tipContainer.style.display = 'none'; // 정답이면 팁 숨기기
     setTimeout(generateAlphaProblem, 500);
   } else {
     feedbackElem.textContent = "❌";
     document.getElementById("alpha-answer").select();
+
+    // 어떤 알파벳에 대한 팁을 보여줄지 결정
+    let tipLetter = '';
+    if (alphaDifficulty === '하') {
+        tipLetter = currentAlphaQuestion;
+    } else {
+        tipLetter = currentAlphaAnswer;
+    }
+    
+    displayAlphaTip(tipLetter); // 팁 표시 함수 호출
   }
+}
+
+/**
+ * 팁 데이터베이스를 기반으로 이미지 또는 텍스트 팁을 화면에 표시하는 함수
+ * @param {string} letter - 표시할 팁의 알파벳 (예: "A")
+ */
+function displayAlphaTip(letter) {
+    const tipContainer = document.getElementById('alpha-tip-container');
+    const tipData = alphabetTips[letter]; // 팁 데이터베이스에서 정보 조회
+
+    tipContainer.innerHTML = ''; // 이전 팁 내용 초기화
+
+    if (tipData) { // 해당 알파벳에 대한 팁이 존재하면
+        if (tipData.type === 'image') {
+            const img = document.createElement('img');
+            img.src = `alpha_tips/${tipData.content}`;
+            img.alt = `${letter} 암기 팁`;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '300px';
+            img.style.borderRadius = '5px';
+            tipContainer.appendChild(img);
+        } else if (tipData.type === 'text') {
+            const p = document.createElement('p');
+            p.textContent = tipData.content;
+            p.className = 'alpha-tip-text';
+            tipContainer.appendChild(p);
+        }
+        tipContainer.style.display = 'block';
+    } else {
+        // 팁이 없으면 컨테이너를 숨김
+        tipContainer.style.display = 'none';
+    }
 }
 
 
@@ -866,4 +950,4 @@ document.getElementById("alpha-answer").addEventListener("keydown", e => { if (e
 loadScores();
 
 // 웹페이지에 처음 접속했을 때 '분수 비교 연습' 페이지를 기본으로 보여줍니다.
-showFractionPage();
+showAlphaQuizPage(); // 이 함수를 호출하도록 변경

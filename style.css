@@ -254,6 +254,15 @@ input[type=number] { -moz-appearance: textfield; }
 #alpha-answer { font-size: 1.2em; width: 100px; text-align: center; margin-left: 10px; }
 #alpha-feedback { display: block; text-align: center; font-weight: bold; margin-top: 10px; height: 1.5em; }
 
+/* 아래 텍스트 팁 스타일을 새로 추가합니다 */
+.alpha-tip-text {
+    padding: 15px;
+    background-color: #f0f8ff; /* 연한 하늘색 배경 */
+    border: 1px solid #b0e0e6;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: #333;
+}
 
 
 

@@ -1,56 +1,10 @@
-<!-- 
-===========================================
-📗 GSAT 반복 숙달 웹 애플리케이션
-===========================================
-이 HTML 문서는 GSAT(삼성 직무적성검사) 대비를 위한 
-연습 플랫폼의 메인 구조를 정의합니다.
-
-각 기능은 별도의 섹션(main 내부 div)으로 구성되며,
-좌측 사이드바 버튼으로 페이지 전환이 이루어집니다.
-
-──────────────────────────────
-📑 전체 목차
-──────────────────────────────
-1. 문서 기본 설정 및 메타 정보
-  1-1. charset, title, 스타일시트, 스크립트 로드
-  1-2. Google Analytics 및 Adsense 설정
-
-2. 페이지 기본 레이아웃
-  2-1. container : 전체 페이지 레이아웃
-  2-2. sidebar   : 좌측 네비게이션 메뉴
-  2-3. main      : 주요 콘텐츠 표시 영역
-
-3. 연습 페이지 구성
-  3-1. 분수 비교 연습 (fraction-page)
-  3-2. 곱셈 연습 (multiplication-page)
-  3-3. 도식 추리 (random-transform-page)
-  3-4. 알파벳 외우기 (alphabet-page)
-
-4. 외부 스크립트 연결
-  4-1. script.js : 기능별 로직 제어 (버튼 클릭, 문제 생성 등)
-
-──────────────────────────────
-⚙️ 코드 전체 개요
-──────────────────────────────
-- 사용 언어 : HTML5
-- 외부 파일 :
-  • style.css  : 전체 스타일 정의
-  • script.js  : 동적 동작 로직
-- 주요 기능 :
-  • 각 연습 유형(분수, 곱셈, 도식, 알파벳)에 대해 독립적인 영역 구성
-  • 네비게이션 버튼 클릭 시 해당 페이지로 전환
-  • Google Analytics/Adsense 트래킹 포함
--->
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- ========== 1. 문서 기본 설정 및 메타 정보 ========== -->
     <meta charset="UTF-8">
     <title>GSAT 반복 숙달</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- 1-2. Google Analytics 및 Adsense 설정 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J9V1XR626F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -62,18 +16,16 @@
 </head>
 
 <body>
-    <!-- ========== 2. 페이지 기본 레이아웃 ========== -->
     <div class="container">
 
-        <!-- 2-2. 좌측 사이드바 -->
         <aside class="sidebar">
             <h3>GSAT 연습</h3>
 
             <nav class="main-nav">
-                <button id="btn-fraction" class="active">분수 비교 연습</button>
+                <button id="btn-alphaquiz" class="active">알파벳 외우기</button>
+                <button id="btn-fraction">분수 비교 연습</button>
                 <button id="btn-multiplication">곱셈 연습</button>
                 <button id="btn-random-transform">도식 추리</button>
-                <button id="btn-alphaquiz">알파벳 외우기</button>
             </nav>
 
             <div class="survey-link">
@@ -81,11 +33,9 @@
             </div>
         </aside>
 
-        <!-- 2-3. 메인 콘텐츠 영역 -->
         <main class="content">
             <h2 id="page-banner">분수 비교 연습</h2>
 
-            <!-- ========== 3-1. 분수 비교 연습 페이지 ========== -->
             <div id="fraction-page">
                 <div class="header">
                     <div class="header-content">
@@ -107,7 +57,6 @@
                 <div id="problems"></div>
             </div>
 
-            <!-- ========== 3-2. 곱셈 연습 페이지 ========== -->
             <div id="multiplication-page">
                 <div class="mul-header">
                     <p>아래의 곱셈 문제를 풀고 엔터키로 정답을 제출하세요.</p>
@@ -135,7 +84,6 @@
                 </div>
             </div>
 
-            <!-- ========== 3-3. 도식 추리 페이지 ========== -->
             <div id="random-transform-page">
                 <div class="header">
                     <p>예시 변환을 보고 난이도를 선택하세요.</p>
@@ -170,7 +118,6 @@
                 <div id="random-feedback" style="text-align:center; font-weight:bold; margin-top:10px;"></div>
             </div>
 
-            <!-- ========== 3-4. 알파벳 외우기 페이지 ========== -->
             <div id="alphabet-page">
                 <div class="header">
                     <p>난이도를 선택하고 문제를 풀어보세요.</p>
@@ -187,11 +134,13 @@
                     <input type="text" id="alpha-answer" placeholder="답 입력">
                 </div>
                 <div id="alpha-feedback"></div>
+
+                <div id="alpha-tip-container" style="display: none; text-align: center; margin-top: 20px;">
+                </div>
             </div>
         </main>
     </div>
     
-    <!-- ========== 4. 외부 스크립트 연결 ========== -->
     <script src="script.js"></script>
 </body>
 </html>
