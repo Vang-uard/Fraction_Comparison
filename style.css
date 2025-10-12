@@ -1,0 +1,283 @@
+/*
+==================================================
+@@ STYLE.CSS - GSAT 연습 페이지 디자인
+==================================================
+이 파일은 웹페이지의 모든 시각적 스타일을 정의합니다.
+- CHAPTER 1: 모든 페이지에 공통으로 적용되는 기본 스타일
+- CHAPTER 2: 페이지를 좌우로 나누는 2단 레이아웃 스타일
+- CHAPTER 3: 왼쪽 사이드바 내부 요소 스타일 (버튼, 링크 등)
+- CHAPTER 4: 오른쪽 메인 콘텐츠 영역 스타일
+- CHAPTER 5: 각 연습 페이지별 세부 스타일
+==================================================
+*/
+
+
+/* @@ CHAPTER 1: 전역 스타일 (Global Styles) */
+/* ================================================== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; /* body의 기본 마진 제거 */
+  background-color: #f4f7f6; /* 페이지 전체 배경색 */
+  color: #333; /* 기본 글자색 */
+}
+
+h1 {
+  margin: 0;
+}
+
+
+/* @@ CHAPTER 2: 메인 레이아웃 (2-Column Layout) */
+/* ================================================== */
+.container {
+  display: flex; /* Flexbox를 사용하여 자식 요소(사이드바, 콘텐츠)를 가로로 배치 */
+  min-height: 100vh; /* 최소 높이를 화면 전체 높이로 설정 */
+}
+
+
+/* @@ CHAPTER 3: 왼쪽 사이드바 스타일 */
+/* ================================================== */
+/* 3-1: 사이드바 기본 틀 */
+.sidebar {
+  width: 220px; /* 사이드바 너비 고정 */
+  background-color: #2c3e50; /* 사이드바 배경색 */
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* 사이드바 내부 요소들을 세로로 정렬 */
+  flex-shrink: 0; /* 창 크기가 줄어도 사이드바 너비는 줄어들지 않음 */
+}
+
+/* 3-2: 사이드바 제목 (GSAT 연습) */
+.sidebar h3 {
+  margin: 0 0 20px 0;
+  text-align: center;
+  font-size: 1.5em;
+  color: #ecf0f1;
+}
+
+/* 3-3: 사이드바 메뉴 버튼 컨테이너 */
+.main-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3-4: 사이드바 메뉴 버튼 개별 스타일 */
+.main-nav button {
+  background-color: transparent;
+  color: #bdc3c7;
+  border: none;
+  padding: 15px 10px;
+  text-align: left;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s, color 0.2s; /* 부드러운 전환 효과 */
+}
+
+/* 3-5: 버튼에 마우스를 올렸을 때 스타일 */
+.main-nav button:hover {
+  background-color: #34495e;
+  color: #ffffff;
+}
+
+/* 3-6: 현재 활성화된 메뉴 버튼 스타일 */
+.main-nav .active {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+/* 3-7: 사이드바 하단 '의견 수렴' 링크 */
+.sidebar .survey-link {
+  margin-top: auto; /* 'auto' 마진을 이용해 맨 아래로 밀어냄 */
+  text-align: center;
+}
+.sidebar .survey-link a {
+  color: #bdc3c7;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.sidebar .survey-link a:hover {
+  color: #ffffff;
+}
+
+
+/* @@ CHAPTER 4: 오른쪽 메인 콘텐츠 스타일 */
+/* ================================================== */
+/* 4-1: 메인 콘텐츠 영역 기본 틀 */
+.content {
+  flex-grow: 1; /* 사이드바를 제외한 나머지 공간을 모두 차지 */
+  padding: 30px;
+  max-width: 900px; /* 콘텐츠가 너무 넓어지지 않도록 최대 너비 제한 */
+  margin: 0 auto; /* 콘텐츠 영역 중앙 정렬 */
+}
+
+/* 4-2: 현재 페이지 제목 배너 스타일 */
+#page-banner {
+  margin: 0 0 20px 0;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #3498db; /* 파란색 하단 테두리 */
+  font-size: 2em;
+  color: #2c3e50;
+}
+
+
+/* @@ CHAPTER 5: 각 연습 페이지별 세부 스타일 */
+/* ================================================== */
+/* 5-1: 페이지별 컨테이너 기본 설정 (처음에는 모두 숨김) */
+#fraction-page, #multiplication-page, #random-transform-page, #alphabet-page {
+  display: none;
+}
+
+/* 5-2: 페이지 공통 헤더 (설명글 등) */
+.header, .mul-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.header p, .mul-header p {
+  font-size: 1.1em;
+  color: #555;
+}
+
+/* 5-3: 분수 비교 페이지 스타일 */
+#fraction-page .header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* 상단 정렬 */
+    margin-bottom: 15px;
+}
+#fraction-page .header p {
+    margin: 0;
+    text-align: left;
+}
+.score-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* 창이 줄어도 크기 유지 */
+}
+#score-container {
+    position: relative;
+    width: 150px;
+    height: 28px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+}
+#score-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%; /* JS에서 동적으로 변경 */
+    background-color: #2ecc71;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+}
+#score-text {
+    position: relative;
+    z-index: 1; /* 텍스트가 바 위에 오도록 설정 */
+    font-size: 0.9em;
+}
+
+/* 아래 버튼 스타일을 새로 추가합니다 */
+#reset-score-btn {
+    margin-left: 8px;
+    padding: 0;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1.2em;
+    width: 28px;  /* 높이와 너비를 맞춤 */
+    height: 28px; /* 높이를 score-container와 맞춤 */
+    line-height: 28px; /* 이모티콘 세로 중앙 정렬 */
+}
+#reset-score-btn:hover {
+    background-color: #e0e0e0;
+}
+
+
+
+
+
+
+
+
+.fraction, .percentage {
+  display: inline-block;
+  text-align: center;
+  margin: 0 10px;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2em;
+}
+.fraction .numerator { display: block; border-bottom: 1px solid #000; padding: 0 4px; }
+.fraction .denominator { display: block; padding: 0 4px; }
+.selected { background-color: #add8e6; border-color: #007bff; }
+.problem { margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd; text-align: center; }
+.controls { text-align: center; margin-top: 20px; }
+.controls button { margin: 0 10px; padding: 10px 20px; font-size: 1em; cursor: pointer; }
+.result { margin-top: 10px; font-weight: bold; }
+
+/* 5-4: 곱셈 연습 페이지 스타일 */
+.numbers-container { text-align: center; }
+.numbers { display: inline-block; text-align: right; font-family: "Courier New", Courier, monospace; }
+.number { display: block; font-size: 2em; line-height: 1.2; }
+.input-feedback-container { display: inline-block; text-align: right; margin-top: 10px; }
+.answer-input { font-size: 2em; text-align: right; width: 5ch; position: relative; left: 42px; font-family: "Courier New", Courier, monospace; }
+.feedback { display: inline-block; width: 24px; text-align: center; margin-left: 5px; position: relative; left: 30px; }
+/* 숫자 입력창의 스핀 버튼 제거 */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+/* 5-5: 도식 추리 페이지 스타일 */
+#rt-difficulty-container { text-align: center; margin-bottom: 10px; }
+#random-transform-display { text-align: center; font-size: 1.5em; margin: 20px; }
+#rt-low-inputs, #rt-high-inputs { text-align: center; margin: 10px; }
+#rt-low-inputs input[type="text"], #rt-high-inputs input[type="text"] { font-size: 1.2em; padding: 5px; width: 250px; margin-left: 10px; }
+#new-code-display { text-align: center; font-size: 1.5em; margin: 20px; }
+
+/* 5-6: 알파벳 외우기 페이지 스타일 */
+#alpha-difficulty-container { text-align: center; margin-bottom: 20px; }
+#alpha-question { text-align: center; font-size: 2em; margin: 20px; }
+#alpha-answer-container { text-align: center; margin: 10px; }
+#alpha-answer { font-size: 1.2em; width: 100px; text-align: center; margin-left: 10px; }
+#alpha-feedback { display: block; text-align: center; font-weight: bold; margin-top: 10px; height: 1.5em; }
+
+
+
+
+
+/* @@ CHAPTER 6: 모바일 유저 편의성*/
+/* ================================================== */
+/* 화면 너비가 768px 이하일 때 (태블릿, 모바일) 적용될 스타일 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* 사이드바와 콘텐츠를 세로로 배치 */
+    }
+    .sidebar {
+        width: 100%; /* 사이드바 너비를 100%로 */
+        height: auto;
+    }
+    .content {
+        padding: 15px; /* 콘텐츠 영역 여백 줄이기 */
+    }
+    #fraction-page .header .header-content {
+        flex-direction: column; /* 설명과 점수판을 세로로 배치 */
+        align-items: flex-start;
+    }
+    #score-container {
+        margin-top: 10px; /* 설명과의 간격 추가 */
+    }
+}
+
