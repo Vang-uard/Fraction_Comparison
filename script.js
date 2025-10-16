@@ -667,7 +667,7 @@ const alphabetTips = {
  //   'C': { type: 'text', content: 'C.jpg' },
  //   'D': { type: 'text', content: 'D는 "Drum"(드럼)의 옆모습과 비슷해요.'},
  //   'E': { type: 'image', content: 'E_tip.gif' },
- //   'F': { type: 'text', content: 'Fuck 6!!' },
+    'F': { type: 'text', content: 'Fuck 유욱!!' },
  //   'G': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
     'H': { type: 'text', content: '에이 치팔~' },
     'I': { type: 'text', content: '아이구~ 아이구~' },
@@ -684,7 +684,7 @@ const alphabetTips = {
     'T': { type: 'text', content: '큰 짝대기 두개, 20' },
    // 'U': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
    // 'V': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
-    'W': { type: 'image', content: 'M.png' },
+    'W': { type: 'image', content: 'W.png' },
     'X': { type: 'text', content: '네잎클로버' },
    // 'Y': { type: 'text', content: 'F는 빗(comb) 모양을 닮았어요.' },
     'Z': { type: 'text', content: '26개 알파벳 중 마지막!' }
