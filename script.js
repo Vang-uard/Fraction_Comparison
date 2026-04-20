@@ -831,7 +831,7 @@ function displayAlphaTip(letter) {
 // 페이지 전환 시 자주 사용되는 DOM 요소들을 미리 변수에 할당하여 성능을 향상시킵니다.
 const banner = document.getElementById("page-banner");
 const navButtons = document.querySelectorAll('.main-nav button');
-const pages = document.querySelectorAll('#fraction-page, #multiplication-page, #random-transform-page, #alphabet-page');
+const pages = document.querySelectorAll('#fraction-page, #multiplication-page, #random-transform-page, #alphabet-page, #nineteen-page');
 
 
 // ### 5-2. 페이지 전환 제어 함수 ###

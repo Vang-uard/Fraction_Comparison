@@ -2,8 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GSAT 반복 숙달</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J9V1XR626F"></script>
     <script>
@@ -16,131 +20,369 @@
 </head>
 
 <body>
-    <div class="container">
+    <!-- 모바일 상단 헤더 -->
+    <header class="mobile-header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="메뉴 열기">
+            <i class="fas fa-bars"></i>
+        </button>
+        <span class="mobile-title">GSAT</span>
+        <span class="mobile-page-title" id="mobile-page-title">알파벳 외우기</span>
+    </header>
 
-        <aside class="sidebar">
-            <h3>GSAT 연습</h3>
+    <!-- 사이드바 오버레이 (모바일) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="app-container">
+
+        <!-- ===== 사이드바 ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-brain"></i>
+                    <span>GSAT 연습</span>
+                </div>
+                <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="메뉴 닫기">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
             <nav class="main-nav">
-                <button id="btn-alphaquiz" class="active">알파벳 외우기</button>
-                <button id="btn-fraction">분수 비교 연습</button>
-                <button id="btn-multiplication">곱셈 연습</button>
-                <button id="btn-random-transform">도식 추리</button>
+                <button id="btn-alphaquiz" class="nav-btn active">
+                    <i class="fas fa-font"></i>
+                    <span>알파벳 외우기</span>
+                </button>
+                <button id="btn-fraction" class="nav-btn">
+                    <i class="fas fa-divide"></i>
+                    <span>분수 비교 연습</span>
+                </button>
+                <button id="btn-multiplication" class="nav-btn">
+                    <i class="fas fa-times"></i>
+                    <span>곱셈 연습</span>
+                </button>
+                <button id="btn-nineteen" class="nav-btn">
+                    <i class="fas fa-table"></i>
+                    <span>19단 암기</span>
+                </button>
+                <button id="btn-random-transform" class="nav-btn">
+                    <i class="fas fa-random"></i>
+                    <span>도식 추리</span>
+                </button>
             </nav>
 
-            <div class="survey-link">
-                <a href="https://forms.gle/V1YgxGrNPdaRg2on7" target="_blank">의견 수렴</a>
+            <div class="sidebar-footer">
+                <a href="https://forms.gle/V1YgxGrNPdaRg2on7" target="_blank" class="survey-link">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>의견 남기기</span>
+                </a>
             </div>
         </aside>
 
-        <main class="content">
-            <h2 id="page-banner">분수 비교 연습</h2>
+        <!-- ===== 메인 콘텐츠 ===== -->
+        <main class="main-content">
 
-            <div id="fraction-page">
-                <div class="header">
-                    <div class="header-content">
-                        <p>난이도를 선택하면 바로 문제가 새로 생성됩니다.<br>
-                           아래 문제에서 두 분수 중 더 큰 분수를 클릭하세요.</p>
-                        
-                        <div class="score-wrapper">
-                            <div id="score-container">
-                                <div id="score-bar"></div>
-                                <span id="score-text">정답률: 0/0</span>
-                            </div>
-                            <button id="reset-score-btn">↩️</button>
-                        </div>
-                    </div>
-                    <label><input type="radio" name="difficulty" value="hard"> 상</label>
-                    <label><input type="radio" name="difficulty" value="medium" checked> 중</label>
-                    <label><input type="radio" name="difficulty" value="easy"> 하</label>
-                </div>
-                <div id="problems"></div>
+            <!-- 페이지 배너 -->
+            <div class="page-banner">
+                <h1 id="page-banner">알파벳 외우기</h1>
             </div>
 
-            <div id="multiplication-page">
-                <div class="mul-header">
-                    <p>아래의 곱셈 문제를 풀고 엔터키로 정답을 제출하세요.</p>
+            <!-- ==================== 알파벳 외우기 ==================== -->
+            <div id="alphabet-page" class="page-section">
+                <div class="section-desc">
+                    <p>난이도를 선택하고 문제를 풀어보세요. 정답 입력 후 <kbd>Enter</kbd>를 누르세요.</p>
                 </div>
-                <div style="text-align:center; margin-bottom:20px;">
-                    <label>첫 번째 수 범위:
-                        <input type="number" id="rangeAmin" value="2" style="width:60px;"> ~
-                        <input type="number" id="rangeAmax" value="99" style="width:60px;">
+
+                <div class="difficulty-group" id="alpha-difficulty-container">
+                    <span class="difficulty-label">난이도</span>
+                    <label class="diff-radio">
+                        <input type="radio" name="alpha-difficulty" value="하" checked>
+                        <span>하</span>
                     </label>
-                    <br><br>
-                    <label>두 번째 수 범위:
-                        <input type="number" id="rangeBmin" value="2" style="width:60px;"> ~
-                        <input type="number" id="rangeBmax" value="19" style="width:60px;">
+                    <label class="diff-radio">
+                        <input type="radio" name="alpha-difficulty" value="중">
+                        <span>중</span>
+                    </label>
+                    <label class="diff-radio">
+                        <input type="radio" name="alpha-difficulty" value="상">
+                        <span>상</span>
                     </label>
                 </div>
-                <div class="numbers-container">
-                    <div class="numbers">
-                        <div id="lineA" class="number"></div>
-                        <div id="lineB" class="number"></div>
-                        <div class="input-feedback-container">
-                            <input type="number" id="answer-input" class="answer-input" placeholder="">
-                            <span id="feedback" class="feedback"></span>
+
+                <div class="quiz-card">
+                    <div id="alpha-question" class="question-display"></div>
+                    <div class="answer-row">
+                        <input type="text" id="alpha-answer" class="answer-input-field" placeholder="답 입력"
+                               autocomplete="off" autocorrect="off" autocapitalize="off">
+                        <button class="submit-btn" onclick="checkAlphaAnswer()">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                    <div id="alpha-feedback" class="feedback-display"></div>
+                </div>
+
+                <div id="alpha-tip-container" style="display:none;"></div>
+            </div>
+
+            <!-- ==================== 분수 비교 연습 ==================== -->
+            <div id="fraction-page" class="page-section">
+                <div class="section-desc">
+                    <p>난이도를 선택하면 문제가 바뀝니다. 두 분수 중 <strong>더 큰 값</strong>을 클릭하세요.</p>
+                </div>
+
+                <div class="fraction-controls">
+                    <div class="difficulty-group">
+                        <span class="difficulty-label">난이도</span>
+                        <label class="diff-radio">
+                            <input type="radio" name="difficulty" value="easy">
+                            <span>하</span>
+                        </label>
+                        <label class="diff-radio">
+                            <input type="radio" name="difficulty" value="medium" checked>
+                            <span>중</span>
+                        </label>
+                        <label class="diff-radio">
+                            <input type="radio" name="difficulty" value="hard">
+                            <span>상</span>
+                        </label>
+                    </div>
+
+                    <div class="score-wrapper">
+                        <div id="score-container">
+                            <div id="score-bar"></div>
+                            <span id="score-text">0 / 0</span>
+                        </div>
+                        <button id="reset-score-btn" title="점수 초기화">
+                            <i class="fas fa-redo-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="problems" class="problems-area"></div>
+            </div>
+
+            <!-- ==================== 곱셈 연습 ==================== -->
+            <div id="multiplication-page" class="page-section">
+                <div class="section-desc">
+                    <p>곱셈 문제를 풀고 <kbd>Enter</kbd>로 제출하세요.</p>
+                </div>
+
+                <div class="range-settings-card">
+                    <div class="range-row">
+                        <label class="range-label">
+                            <i class="fas fa-hashtag"></i> 첫 번째 수 범위
+                        </label>
+                        <div class="range-inputs">
+                            <input type="number" id="rangeAmin" value="2" class="range-input">
+                            <span class="range-sep">~</span>
+                            <input type="number" id="rangeAmax" value="99" class="range-input">
+                        </div>
+                    </div>
+                    <div class="range-row">
+                        <label class="range-label">
+                            <i class="fas fa-hashtag"></i> 두 번째 수 범위
+                        </label>
+                        <div class="range-inputs">
+                            <input type="number" id="rangeBmin" value="2" class="range-input">
+                            <span class="range-sep">~</span>
+                            <input type="number" id="rangeBmax" value="19" class="range-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-card mul-card">
+                    <div class="mul-problem">
+                        <div id="lineA" class="mul-number"></div>
+                        <div id="lineB" class="mul-number mul-second"></div>
+                        <div class="mul-divider"></div>
+                        <div class="mul-answer-row">
+                            <input type="number" id="answer-input" class="mul-answer-input"
+                                   placeholder="정답" autocomplete="off">
+                            <span id="feedback" class="mul-feedback"></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="random-transform-page">
-                <div class="header">
-                    <p>예시 변환을 보고 난이도를 선택하세요.</p>
-                </div>
-                <div id="rt-difficulty-container">
-                    난이도:
-                    <label><input type="radio" name="rt-difficulty" value="상"> 상</label>
-                    <label><input type="radio" name="rt-difficulty" value="하" checked> 하</label>
-                </div>
-                <div id="random-transform-display"></div>
-                <div id="rt-low-inputs">
-                    <div class="input-group">
-                        <label>증감변환:</label>
-                        <input type="text" id="increment-input" placeholder="예: 2 -1 3 -2">
+            <!-- ==================== 19단 암기 ==================== -->
+            <div id="nineteen-page" class="page-section">
+
+                <!-- ① 표 + 챕터 선택 구역 -->
+                <div id="nt-table-section">
+                    <div class="section-desc">
+                        <p>
+                            표에서 <strong>드래그</strong>하여 연습할 단을 선택하세요.
+                            <span class="nt-legend">
+                                <span class="nt-leg-dot green"></span>잘 앎
+                                <span class="nt-leg-dot yellow"></span>보통
+                                <span class="nt-leg-dot red"></span>틀림
+                            </span>
+                        </p>
                     </div>
-                    <div class="input-group">
-                        <label>순서변환:</label>
-                        <input type="text" id="order-input" placeholder="예: 4213">
+
+                    <div class="nt-quick-btns">
+                        <button class="nt-quick-btn" onclick="ntSelectAll()">
+                            <i class="fas fa-check-double"></i> 전체 선택
+                        </button>
+                        <button class="nt-quick-btn" onclick="ntDeselectAll()">
+                            <i class="fas fa-times"></i> 전체 해제
+                        </button>
+                        <button class="nt-quick-btn danger" onclick="ntResetAllStats()">
+                            <i class="fas fa-trash-alt"></i> 기록 초기화
+                        </button>
+                    </div>
+
+                    <div class="nt-table-outer">
+                        <div id="nt-table-wrap"></div>
                     </div>
                 </div>
-                <div id="rt-high-inputs" style="display:none;">
-                    <div id="new-code-display"></div>
-                    <div class="input-group">
-                        <label>변환 결과:</label>
-                        <input type="text" id="high-answer-input" placeholder="변환 결과 입력">
+
+                <!-- ② 선택된 챕터 배지 + 테스트 시작 버튼 -->
+                <div class="nt-chapter-bar">
+                    <div id="nt-chapter-badges" class="nt-badges-wrap"></div>
+                    <div class="nt-chapter-actions">
+                        <button id="nt-start-test-btn" class="action-btn primary-btn"
+                                onclick="ntStartTest()" disabled>
+                            <i class="fas fa-play"></i> 테스트 시작
+                        </button>
                     </div>
                 </div>
-                <div style="text-align:center;">
-                    <button id="new-random-problem">새 문제</button>
-                    <button id="grade-random-problem">채점</button>
+
+                <!-- ③ 테스트 모드 (기본 숨김) -->
+                <div id="nt-test-section" style="display:none;">
+
+                    <!-- 표 접기/펼치기 드롭다운 -->
+                    <div id="nt-table-toggle-wrap" style="display:none; margin-bottom:14px;">
+                        <button class="nt-toggle-btn" onclick="ntToggleTableInTest()">
+                            <i class="fas fa-table"></i>
+                            <span id="nt-table-toggle-label">표 보기 ▼</span>
+                        </button>
+                    </div>
+
+                    <div class="nt-test-card quiz-card">
+                        <div id="nt-test-chapter-info" class="nt-test-range"></div>
+                        <div id="nt-question" class="nt-question question-display"></div>
+
+                        <div class="answer-row" style="max-width:300px; margin:0 auto 12px;">
+                            <input type="number" id="nt-answer-input" class="answer-input-field"
+                                   placeholder="정답 입력" autocomplete="off">
+                            <button class="submit-btn" onclick="ntCheckAnswer()">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+
+                        <div id="nt-test-feedback" class="feedback-display"></div>
+                        <div id="nt-stats-display" class="nt-stats"></div>
+                    </div>
+
+                    <div class="action-btns" style="margin-top:16px;">
+                        <button class="action-btn secondary-btn" onclick="ntResetStats()">
+                            <i class="fas fa-redo-alt"></i> 범위 기록 초기화
+                        </button>
+                        <button class="action-btn danger-btn" onclick="ntExitTest()">
+                            <i class="fas fa-arrow-left"></i> 표로 돌아가기
+                        </button>
+                    </div>
                 </div>
-                <div id="random-feedback" style="text-align:center; font-weight:bold; margin-top:10px;"></div>
+
             </div>
 
-            <div id="alphabet-page">
-                <div class="header">
-                    <p>난이도를 선택하고 문제를 풀어보세요.</p>
+            <!-- ==================== 도식 추리 ==================== -->
+            <div id="random-transform-page" class="page-section">
+                <div class="section-desc">
+                    <p>예시 변환 규칙을 파악하고 정답을 입력하세요.</p>
                 </div>
-                <div id="alpha-difficulty-container" style="text-align:center;">
-                    난이도:
-                    <label><input type="radio" name="alpha-difficulty" value="상"> 상</label>
-                    <label><input type="radio" name="alpha-difficulty" value="중"> 중</label>
-                    <label><input type="radio" name="alpha-difficulty" value="하" checked> 하</label>
-                </div>
-                <div id="alpha-question"></div>
-                <div id="alpha-answer-container">
-                    <label>정답:</label>
-                    <input type="text" id="alpha-answer" placeholder="답 입력">
-                </div>
-                <div id="alpha-feedback"></div>
 
-                <div id="alpha-tip-container" style="display: none; text-align: center; margin-top: 20px;">
+                <div class="difficulty-group" id="rt-difficulty-container">
+                    <span class="difficulty-label">난이도</span>
+                    <label class="diff-radio">
+                        <input type="radio" name="rt-difficulty" value="하" checked>
+                        <span>하</span>
+                    </label>
+                    <label class="diff-radio">
+                        <input type="radio" name="rt-difficulty" value="상">
+                        <span>상</span>
+                    </label>
+                </div>
+
+                <div class="quiz-card">
+                    <div id="random-transform-display" class="transform-display"></div>
+
+                    <div id="rt-low-inputs" class="rt-inputs">
+                        <div class="rt-input-row">
+                            <label class="rt-input-label">증감변환</label>
+                            <input type="text" id="increment-input" class="rt-text-input" placeholder="예: 2 -1 3 -2">
+                        </div>
+                        <div class="rt-input-row">
+                            <label class="rt-input-label">순서변환</label>
+                            <input type="text" id="order-input" class="rt-text-input" placeholder="예: 4213">
+                        </div>
+                    </div>
+
+                    <div id="rt-high-inputs" class="rt-inputs" style="display:none;">
+                        <div id="new-code-display" class="transform-display sub-transform"></div>
+                        <div class="rt-input-row">
+                            <label class="rt-input-label">변환 결과</label>
+                            <input type="text" id="high-answer-input" class="rt-text-input" placeholder="변환 결과 입력">
+                        </div>
+                    </div>
+
+                    <div id="random-feedback" class="feedback-display"></div>
+                </div>
+
+                <div class="action-btns">
+                    <button id="new-random-problem" class="action-btn secondary-btn">
+                        <i class="fas fa-sync-alt"></i> 새 문제
+                    </button>
+                    <button id="grade-random-problem" class="action-btn primary-btn">
+                        <i class="fas fa-check-circle"></i> 채점
+                    </button>
                 </div>
             </div>
+
         </main>
     </div>
-    
+
     <script src="script.js"></script>
+    <script src="js/nineteen.js"></script>
+    <script>
+        /* ── 19단 페이지 전환 연결 ── */
+        function showNineteenPage() {
+            banner.textContent = '19단 암기';
+            setActive(document.getElementById('btn-nineteen'));
+            showPage(document.getElementById('nineteen-page'));
+            ntInit();
+        }
+        document.getElementById('btn-nineteen').addEventListener('click', showNineteenPage);
+
+        /* ── 햄버거 메뉴 (모바일) ── */
+        const hamburgerBtn   = document.getElementById('hamburger-btn');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+        const sidebarOverlay  = document.getElementById('sidebar-overlay');
+        const sidebarEl       = document.getElementById('sidebar');
+
+        function openSidebar()  {
+            sidebarEl.classList.add('open');
+            sidebarOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            sidebarEl.classList.remove('open');
+            sidebarOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', openSidebar);
+        sidebarCloseBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                closeSidebar();
+                setTimeout(() => {
+                    document.getElementById('mobile-page-title').textContent =
+                        document.getElementById('page-banner').textContent;
+                }, 50);
+            });
+        });
+    </script>
 </body>
 </html>
